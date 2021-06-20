@@ -24,9 +24,6 @@ const cartReducer = (state, action) => {
 };
 
 export const CartProvider = (props) => {
-  // Maybe change this
-  const [cartIsShown, setCartIsShown] = useState(false);
-
   const [cartState, dispatch] = useReducer(cartReducer, defaultCartState);
 
   const addItemToCartHandler = (item) => {
@@ -36,19 +33,9 @@ export const CartProvider = (props) => {
   const removeItemFromCartHandler = (id) => {
     dispatch({ type: 'REMOVE', id });
   };
-
-  const cartShownHandler = () => {
-    console.log('heree');
-    setCartIsShown((car) => {
-      return !car;
-    });
-  };
-
   const cartContext = {
-    cartIsShown,
     items: cartState.items,
     totalAmount: cartState.totalAmount,
-    onShowCart: cartShownHandler,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
   };

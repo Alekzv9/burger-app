@@ -3,16 +3,20 @@ import CartContext from '../../store/cart-context';
 import CartIcon from '../Cart/CartIcon';
 import classes from './HeaderCartButton.module.css';
 
-const HeaderCartButton = () => {
-  const { onShowCart, items } = useContext(CartContext);
+const HeaderCartButton = (props) => {
+  const { items } = useContext(CartContext);
 
   const numberOfItems = items.reduce(
     (accumulator, current) => accumulator + current.amount,
     0
   );
 
+  const onClickHandler = () => {
+    props.onClick(true);
+  };
+
   return (
-    <button className={classes.button} onClick={onShowCart}>
+    <button onClick={onClickHandler} className={classes.button}>
       <span className={classes.icon}>
         <CartIcon />
       </span>

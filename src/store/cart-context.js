@@ -1,24 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const CartContext = React.createContext({
   cartIsShown: false,
   onShowCart: () => {},
+  items: [],
+  totalAmount: 0,
+  addItem: (item) => {},
+  removeItem: (id) => {},
 });
-
-export const CartContextProvider = (props) => {
-  const [cartIsShown, setCartIsShown] = useState(false);
-
-  const cartShownHandler = () => {
-    setCartIsShown((car) => {
-      return !car;
-    });
-  };
-
-  return (
-    <CartContext.Provider value={{ cartIsShown, onShowCart: cartShownHandler }}>
-      {props.children}
-    </CartContext.Provider>
-  );
-};
 
 export default CartContext;

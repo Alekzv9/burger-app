@@ -4,7 +4,12 @@ import CartIcon from '../Cart/CartIcon';
 import classes from './HeaderCartButton.module.css';
 
 const HeaderCartButton = () => {
-  const { onShowCart } = useContext(CartContext);
+  const { onShowCart, items } = useContext(CartContext);
+
+  const numberOfItems = items.reduce(
+    (accumulator, current) => accumulator + current.amount,
+    0
+  );
 
   return (
     <button className={classes.button} onClick={onShowCart}>
@@ -12,7 +17,7 @@ const HeaderCartButton = () => {
         <CartIcon />
       </span>
       <span>Your Cart</span>
-      <span className={classes.badge}>3</span>
+      <span className={classes.badge}>{numberOfItems}</span>
     </button>
   );
 };

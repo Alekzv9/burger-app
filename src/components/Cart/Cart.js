@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import CartContext from '../../store/cart-context';
 import Modal from '../UI/Modal';
 import classes from './Cart.module.css';
+import CartItem from './CartItem';
 
 const Cart = (props) => {
+  const cartCtx = useContext(CartContext);
+
+  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+  const hasItems = !!cartCtx.items.length;
+
+  const cartItemRemoveHandler = () => {};
+
+  const cartItemAddHandler = () => {};
+
   const cartItems = (
+    // bind() pre configures a function for future usage.
     <ul className={classes['cart-items']}>
-      {[{ id: 'c1', name: 'Chocotorta', price: 12.99, amount: 2 }].map(
-        (item) => (
-          <li key={item.id}>{item.name}</li>
-        )
-      )}
+      {cartCtx.items.map((item) => (
+        <CartItem
+          {...item}
+          key={item.id}
+          onRemove={cartItemRemoveHandler.bind(null, item.id)}
+          onAdd={cartItemAddHandler.bind(null, item.id)}
+        />
+      ))}
     </ul>
   );
 
@@ -27,7 +42,7 @@ const Cart = (props) => {
         >
           Close
         </button>
-        <button className={classes.button}>Order</button>
+        {hasItems && <button className={classes.button}>Order</button>}
       </div>
     </Modal>
   );

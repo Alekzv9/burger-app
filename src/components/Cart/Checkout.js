@@ -20,9 +20,9 @@ const Checkout = (props) => {
   const confirmHandler = (event) => {
     event.preventDefault();
     const name = nameRef.current.value;
-    const street = nameRef.current.value;
-    const postal = nameRef.current.value;
-    const city = nameRef.current.value;
+    const street = streetRef.current.value;
+    const postal = postalRef.current.value;
+    const city = cityRef.current.value;
 
     const nameIsValid = isEmpty(name);
     const streetIsValid = isEmpty(street);
@@ -42,6 +42,13 @@ const Checkout = (props) => {
     if (!formIsValid) {
       return;
     }
+
+    props.onConfirm({
+      name,
+      street,
+      postal,
+      city,
+    });
   };
 
   const nameControlClass = `${classes.control} ${

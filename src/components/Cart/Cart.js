@@ -24,6 +24,20 @@ const Cart = (props) => {
     setIsCheckout(true);
   };
 
+  const confirmHandler = async (userData) => {
+    const response = await fetch(
+      'https://react-my-burger-19906.firebaseio.com/orders.json',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: cartCtx.items,
+        }),
+      }
+    );
+    console.log(response);
+  };
+
   const cartItems = (
     // bind() pre configures a function for future usage.
     <ul className={classes['cart-items']}>
@@ -61,7 +75,12 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={() => props.onClose(false)} />}
+      {isCheckout && (
+        <Checkout
+          onConfirm={confirmHandler}
+          onCancel={() => props.onClose(false)}
+        />
+      )}
       {!isCheckout && modalActions}
     </Modal>
   );

@@ -7,6 +7,8 @@ import CartItem from './CartItem';
 
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -25,6 +27,7 @@ const Cart = (props) => {
   };
 
   const confirmHandler = async (userData) => {
+    setIsSubmitting(true);
     const response = await fetch(
       'https://react-my-burger-19906.firebaseio.com/orders.json',
       {
@@ -36,6 +39,9 @@ const Cart = (props) => {
       }
     );
     console.log(response);
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
   };
 
   const cartItems = (
@@ -68,8 +74,8 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={() => props.onClose(false)}>
+  const cartModalContent = (
+    <React.Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
@@ -82,6 +88,26 @@ const Cart = (props) => {
         />
       )}
       {!isCheckout && modalActions}
+    </React.Fragment>
+  );
+
+  const isSubmittingContent = <p>Sending order data...</p>;
+  const didSubmitContent = (
+    <React.Fragment>
+      <p>Succefully sent the order</p>
+      <div className={classes.actions}>
+        <button onClick={() => props.onClose(false)} className={classes.button}>
+          Close
+        </button>
+      </div>
+    </React.Fragment>
+  );
+
+  return (
+    <Modal onClose={() => props.onClose(false)}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingContent}
+      {!isSubmitting && didSubmit && didSubmitContent}
     </Modal>
   );
 };
